@@ -39,3 +39,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 # Aula 01: Criação do projeto
 ## details:
  
+Next.Js (Core APP coding syntax)
+Prisma (Core DB Relation ORM)
+Supabase (DB Server)
+ts-node typescript code reader
+shadcnUI (front lib)
