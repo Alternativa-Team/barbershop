@@ -30,7 +30,7 @@ model Service {
   name          String
   price         Decimal @db.Decimal(10, 2)
   barbershopId  String
-  berbershop    Barbershop @relation(fields: [barbershopId], references: [id])
+  barbershop    Barbershop @relation(fields: [barbershopId], references: [id])
   description   String
   bookings      Booking[]
 }
