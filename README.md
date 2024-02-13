@@ -47,27 +47,17 @@ Supabase (DB Server)
 ts-node typescript code reader
 shadcnUI (front lib)
 
-<p align="center">
-      <img src="https://github.com/mateusloubach/tesla-clone/blob/main/public/images/logo-b.png" width="500" alt="Logo"/>
-</p>
-
-<h1 align="center"></h1>
 
 <div align="center">
   
-  ![GitHub last commit](https://img.shields.io/github/last-commit/mateusloubach/tesla-clone/main?style=flat-square)
-  ![GitHub top language](https://img.shields.io/github/languages/top/mateusloubach/tesla-clone?style=flat-square&logoColor=f5f5f5&color=%23e4e3e3)
-  ![GitHub language count](https://img.shields.io/github/languages/count/mateusloubach/tesla-clone?style=flat-square&color=%23e4e3e3)
-  ![GitHub Code Size](https://img.shields.io/github/languages/code-size/mateusloubach/tesla-clone?style=flat-square&color=%23e4e3e3)
+
+![Github last commit](https://img.shields.io/github/last-commit/Alternativa-Team/barbershop/master?style=flat-square)
+  ![GitHub top language](https://img.shields.io/github/languages/top/Alternativa-Team/barbershop?style=flat-square&logoColor=f5f5f5&color=%23e4e3e3)
+  ![GitHub language count](https://img.shields.io/github/languages/count/Alternativa-Team/barbershop?style=flat-square&color=%23e4e3e3)
+  ![GitHub Code Size](https://img.shields.io/github/languages/code-size/Alternativa-Team/barbershop?style=flat-square&color=%23e4e3e3)
 
 </div>
 
-<div>
-  <div>  
-        <img src="./public/images/configurator.png" alt="Configurator Image Ex" width="48%" />  
-        <img src="./public/images/modely-market.png" alt="ModelY Marketing" width="50%" />
-  </div>
-</div>
 
 
 # ✨ Features

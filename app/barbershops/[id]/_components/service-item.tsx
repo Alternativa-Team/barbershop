@@ -1,9 +1,14 @@
 "use client"; 
 import { Button } from "@/app/_components/ui/button";
+import { Calendar } from "@/app/_components/ui/calendar";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Service } from "@prisma/client";
+import { ptBR } from "date-fns/locale";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useMemo, useState } from "react";
+import { generateDayTimeList } from "../_helpers/hours";
 
 
 interface ServiceItemProps {
@@ -12,6 +17,16 @@ interface ServiceItemProps {
 }
 
 const ServiceItem = ({service, isAuthenticated}: ServiceItemProps) => {
+    const [date, setDate] = useState<Date | undefined>(new Date());
+    const [hour, setHour] = useState<String | undefined>();
+
+    const timeList = useMemo(() => {
+        return date ? generateDayTimeList(date) : [];
+    }, [date]);
+
+    const handleHourClick = (time: string) => {
+        setHour(time);
+    };
 
     const handleBookingClick = () => {
         if (!isAuthenticated ) {
@@ -44,7 +59,53 @@ const ServiceItem = ({service, isAuthenticated}: ServiceItemProps) => {
                                     style: 'currency', currency: 'BRL' 
                                 }).format(Number(service.price))}
                             </p>
-                            <Button variant="secondary" onClick={handleBookingClick}>Reservar</Button>
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button variant="secondary" onClick={handleBookingClick}>
+                                        Reservar
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent className="p-0">
+                                    <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
+                                        <SheetTitle>Fazer Reserva</SheetTitle>
+                                    </SheetHeader>
+                                    <Calendar mode="single" selected={date} onSelect={setDate} locale={ptBR}
+                                    fromDate={new Date()}
+                                    className="mt-5"
+                                        styles={{
+                                            head_cell: {
+                                                width: "100%",
+                                                textTransform: "capitalize"
+                                            },
+                                            cell: {
+                                                width: "100%"
+                                            },
+                                            caption: {
+                                                textTransform: "capitalize"
+                                            },
+                                            button: {
+                                                width: "100%"
+                                            },
+                                            nav_button_previous : {
+                                                width: "32px", height: "32px"
+                                            },
+                                            nav_button_next : {
+                                                width: "32px", height: "32px"
+                                            }
+                                        }}
+                                    />
+                                    {/*Mostrar lista de horários apenas se alguma data estiver selecionada*/}
+                                    {date && (
+                                        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden py-6 px-5 border-y border-solid border-secondary">
+                                            {timeList.map((time) => (
+                                                <Button variant="outline" className="rounded-full" key={time}>
+                                                    {time}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </SheetContent>
+                            </Sheet>
                         </div>
                     </div>
                 </div>   
