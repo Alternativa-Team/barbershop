@@ -5,11 +5,13 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Barbershop, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../_actions/save-booking";
+import { Loader2 } from "lucide-react";
 
 
 interface ServiceItemProps {
@@ -19,8 +21,10 @@ interface ServiceItemProps {
 }
 
 const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) => {
+    const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(new Date());
     const [hour, setHour] = useState<String | undefined>();
+    const [submitIsLoading, setSubmitIsLoading] = useState(false);
 
     const timeList = useMemo(() => {
         return date ? generateDayTimeList(date) : [];
@@ -39,9 +43,32 @@ const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) =
         if (!isAuthenticated ) {
             signIn('google')
         }
-
-        //TODO Open schedule modal;
     }
+
+    const handleBookingSubmit = async () => {
+        setSubmitIsLoading(true);
+        try {
+            if (!date || !hour || !data?.user) {
+                return
+            }
+
+            const dateHours = Number(hour?.split(':')[0]);
+            const dateMinutes = Number(hour?.split(':')[1]);
+
+            const newDate = setMinutes(setHours(date, dateHours), dateMinutes);
+
+            await saveBooking ({
+                barbershopId: barbershop.id,
+                serviceId: service.id,
+                date: newDate,
+                userId: (data.user as any).id,
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setSubmitIsLoading(false);
+        }
+    };
 
 
     return ( 
@@ -127,17 +154,15 @@ const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) =
                                                     </h3>
                                                 </div>
                                                 {date && (
-                                                    <div className="gap-3 flex flex-col">
-                                                        <div className="flex justify-between">
-                                                            <h3 className="text-gray-400 text-sm">Data:</h3>
-                                                            <h4 className="text-sm"> {format(date, "dd 'de' MMMM", {locale: ptBR})}</h4>
-                                                        </div>
-                                                        {hour && (
-                                                            <div className="flex justify-between">
-                                                                <h3 className="text-gray-400 text-sm">Horário:</h3>
-                                                                <h4 className="text-sm">{hour}</h4>
-                                                            </div>
-                                                        )}
+                                                    <div className="flex justify-between">
+                                                        <h3 className="text-gray-400 text-sm">Data:</h3>
+                                                        <h4 className="text-sm"> {format(date, "dd 'de' MMMM", {locale: ptBR})}</h4>
+                                                    </div>
+                                                )}
+                                                {hour && (
+                                                    <div className="flex justify-between">
+                                                        <h3 className="text-gray-400 text-sm">Horário:</h3>
+                                                        <h4 className="text-sm">{hour}</h4>
                                                     </div>
                                                 )}
                                                 <div className="flex justify-between">
@@ -147,9 +172,10 @@ const ServiceItem = ({service, barbershop, isAuthenticated}: ServiceItemProps) =
                                             </CardContent>
                                         </Card>
                                     </div>
+
                                     <SheetFooter className="px-5">
-                                        <Button disabled={!hour || !date}>
-                                            Confirmar Reserva
+                                        <Button onClick={handleBookingSubmit} disabled={!hour || !date || submitIsLoading}>
+                                            {submitIsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Confirmar Reserva
                                         </Button>
                                     </SheetFooter>
                                 </SheetContent>
