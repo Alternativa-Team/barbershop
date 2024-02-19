@@ -21,7 +21,7 @@ const BookingItem = () => {
 
                 <div className="flex flex-col items-center justify-center px-3 border-l border-solid border-secondary">
                     <p className="text-sm">Fevereiro</p>
-                    <p className="text-2xl">06</p>
+                    <p className="text-2xl">17</p>
                     <p className="text-sm">09:45</p>
                 </div>
             </CardContent>
