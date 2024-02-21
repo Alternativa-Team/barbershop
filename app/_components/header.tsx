@@ -10,7 +10,7 @@ const Header = () => {
     return ( 
         <Card>
             <CardContent className="p-5 justify-between items-center flex flex-row">
-                <Image
+                <Image 
                     src="/mainlogo.png" alt="barbershopLogo" height={122} width={220} 
                 />
                 <Sheet>
