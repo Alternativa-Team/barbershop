@@ -70,7 +70,7 @@ const BookingsPage = async () => {
                         ))}
                     </div>
                 </>
-            )};
+            )}
         </div>
     </> 
     );
