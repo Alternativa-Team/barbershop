@@ -8,23 +8,23 @@ import { authOptions } from "@/app/_lib/auth";
 interface BarbershopDetailsPageProps {
     params: {
         id?: string;
-    }
+    };
 }
 
-const BarbershopDetailsPage = async ({params}: BarbershopDetailsPageProps) => {
-        const session = await getServerSession(authOptions)
+const BarbershopDetailsPage = async ({ params }: BarbershopDetailsPageProps) => {
+        const session = await getServerSession(authOptions);
         
         if (!params.id) {
             //TO DO - Redirect to 404
             return null;
-        };
+        }
     const barbershop = await db.barbershop.findUnique({
         where: {
             id: params.id,
         },
         include: {
             services: true,
-        }
+        },
     });
         if (!barbershop) {
             //TO DO - Redirect to 404
@@ -35,7 +35,7 @@ const BarbershopDetailsPage = async ({params}: BarbershopDetailsPageProps) => {
                 <BarbershopInfo barbershop={barbershop} />
 
                 <div className="px-5 flex flex-col gap-4 py-6">
-                    {barbershop.services.map((service: { id: Key | null | undefined; }) => (
+                    {barbershop.services.map((service) => (
                         <ServiceItem key={service.id} barbershop={barbershop} service={service} isAuthenticated={!!session?.user} />
 
                     ))}
